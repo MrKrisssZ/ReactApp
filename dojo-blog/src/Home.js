@@ -16,14 +16,19 @@ function Home(){
         ])
         console.log('Hello! ' + name, e.target)
     }
+    const handleDelete = (id) => {
+        let newBlogs = blogs.filter((blog) => blog.id !== id)
+        setBlogs(newBlogs)
+    }
+
     // key property is something that react uses to keep track of each item in the dom, otherwise react can not distinguise items and it must be unique
     return (
         // if add handleClick(), then it will automatically invoke the click without user actually click it.
         // function inside the map called return back function.
         <div className="home">
             <h1>Homepage</h1>
-            <BlogList blogs={blogs} title='All Blogs!'></BlogList>
-            
+            <BlogList blogs={blogs} title='All Blogs!' handleDelete={handleDelete}></BlogList>
+            <BlogList blogs={blogs.filter((blog) => blog.author === 'mario')} title="Mario's Blogs" handleDelete={handleDelete}></BlogList>
             <button onClick={(e) => {handleClick('kris', e)}}>Click Me</button>
         </div>
     );
