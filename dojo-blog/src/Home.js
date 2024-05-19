@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import BlogList from './BlogList'
 
 function Home(){
@@ -7,6 +7,7 @@ function Home(){
     // const [age, setAge] = useState(25)
 
     const [blogs, setBlogs] = useState([ ])
+    const [name, setName] = useState('mario')
     const handleClick = (name, e) => {
         
         setBlogs([
@@ -21,6 +22,13 @@ function Home(){
         setBlogs(newBlogs)
     }
 
+    // the second argument is an empty array which means the function inside will only run once after the initial render. It controls when the function inside runs
+    useEffect(() => {
+        console.log('useEffect runs')
+        console.log(name)
+    }, [name])
+
+
     // key property is something that react uses to keep track of each item in the dom, otherwise react can not distinguise items and it must be unique
     return (
         // if add handleClick(), then it will automatically invoke the click without user actually click it.
@@ -28,8 +36,10 @@ function Home(){
         <div className="home">
             <h1>Homepage</h1>
             <BlogList blogs={blogs} title='All Blogs!' handleDelete={handleDelete}></BlogList>
-            <BlogList blogs={blogs.filter((blog) => blog.author === 'mario')} title="Mario's Blogs" handleDelete={handleDelete}></BlogList>
-            <button onClick={(e) => {handleClick('kris', e)}}>Click Me</button>
+            {/* <BlogList blogs={blogs.filter((blog) => blog.author === 'mario')} title="Mario's Blogs" handleDelete={handleDelete}></BlogList> */}
+            <button onClick={(e) => handleClick('kris', e)}>Click Me</button>
+            <button onClick={() => setName('yesheng')}>Change Me!</button>
+            <p>{name}</p>
         </div>
     );
 }
