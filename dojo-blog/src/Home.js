@@ -6,15 +6,14 @@ function Home(){
     // const [name, setName] = useState('kris')
     // const [age, setAge] = useState(25)
 
-    const [blogs, setBlogs] = useState([ ])
-    const [name, setName] = useState('mario')
+    const [blogs, setBlogs] = useState(null)
     const handleClick = (name, e) => {
         
-        setBlogs([
-            { title: 'My new website', body: 'lorem ipsum...', author: 'mario', id: 1 },
-            { title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2 },
-            { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'mario', id: 3 }
-        ])
+        // setBlogs([
+        //     { title: 'My new website', body: 'lorem ipsum...', author: 'mario', id: 1 },
+        //     { title: 'Welcome party!', body: 'lorem ipsum...', author: 'yoshi', id: 2 },
+        //     { title: 'Web dev top tips', body: 'lorem ipsum...', author: 'mario', id: 3 }
+        // ])
         console.log('Hello! ' + name, e.target)
     }
     const handleDelete = (id) => {
@@ -24,9 +23,8 @@ function Home(){
 
     // the second argument is an empty array which means the function inside will only run once after the initial render. It controls when the function inside runs
     useEffect(() => {
-        console.log('useEffect runs')
-        console.log(name)
-    }, [name])
+        fetch('http://localhost:8000/blogs').then((res) => {return res.json()}).then((data) => setBlogs(data))
+    }, [])
 
 
     // key property is something that react uses to keep track of each item in the dom, otherwise react can not distinguise items and it must be unique
@@ -35,11 +33,9 @@ function Home(){
         // function inside the map called return back function.
         <div className="home">
             <h1>Homepage</h1>
-            <BlogList blogs={blogs} title='All Blogs!' handleDelete={handleDelete}></BlogList>
-            {/* <BlogList blogs={blogs.filter((blog) => blog.author === 'mario')} title="Mario's Blogs" handleDelete={handleDelete}></BlogList> */}
+            {blogs && <BlogList blogs={blogs} title='All Blogs!' handleDelete={handleDelete}></BlogList>}
+            {blogs &&<BlogList blogs={blogs.filter((blog) => blog.author === 'mario')} title="Mario's Blogs" handleDelete={handleDelete}></BlogList>}
             <button onClick={(e) => handleClick('kris', e)}>Click Me</button>
-            <button onClick={() => setName('yesheng')}>Change Me!</button>
-            <p>{name}</p>
         </div>
     );
 }
